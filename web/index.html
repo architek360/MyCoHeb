@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<head>
+<title>MyCoHeB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" type="text/css" href="mycoheb.css"/>
+<style type="text/css" title="text/css">
+	@import "../dojo-release-1.7.1/dijit/themes/tundra/tundra.css";
+	@import "../dojo-release-1.7.1/dojo/resources/dojo.css";	
+	@import "../dojo-release-1.7.1/dijit/themes/claro/claro.css";
+	@import "../dojo-release-1.7.1/dojox/widget/Wizard/Wizard.css";
+</style>
+
+<script type="text/javascript" src="http://www.google.com/jsapi?autoload={'modules':[{name:'maps',version:3,other_params:'libraries=geometry%26sensor=false'}]}">
+</script>
+<script type="text/javascript" src="../spin.js/spin.js"></script>
+<script src="../dojo-release-1.7.1/dojo/dojo.js" data-dojo-config="async: true, parseOnLoad: true"></script>
+<script type="text/javascript" src="mycoheb.js"></script>
+<!-- google dojo link http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js -->
+<!-- Dojo documentation: http://dojotoolkit.org/reference-guide/1.7 -->
+
+</head>
+<body class="tundra" >
+<div id="outer">
+<div id="header" class="container">
+	<div id="areaInput"></div>
+	<div id="search" style="display:none" class="button">Search</div>
+	<div id="draw" class="button">Draw Chart</div>
+	<div id="radBox" style="display: none">
+	<div id="radLabel" style="display: none">Radius:</div>
+	<form id="radiusSpinner" style="display: none">
+		<table cellpadding="0" cellspacing="0" border="0">
+		<tr>
+		<td rowspan="2"><input type="text" id="radius" name="number" value="25" style="width:50px;height:23px;font-weight:bold;" /></td>
+		<td><input type="button" value=" /\ " onclick="this.form.number.value++;" 
+			style="font-size:7px;margin:0;padding:0;width:20px;height:100%;position:relative;top:-2px" />
+		</td>
+		</tr>
+		<tr>
+		<td><input type=button value=" \/ " onclick="this.form.number.value--;" style="font-size:7px;margin:0;padding:0;width:20px;height:100%;top:-5px;position:relative" />
+		</td>
+		</tr>
+		</table>
+	</form>
+	<div style="display: inline-block">km</div>
+	</div>
+	<div id="title" style="display:none">My Community Health Beat (MyCoHeB)</div>
+</div> <!-- header -->
+<div id="left_div" class="container">
+<div id="circleb" title="Draw a circle to select an area."></div>
+<div id="rectb" title="Draw a rectangle to select an area."></div>
+</div>
+<div id="right_div" class="container tundra">
+	<div id="chart_div"></div>
+	<div id="legend1"></div>
+</div>
+<div id="data_div" class="container">
+	<div style="width:100%;height:10%">
+	<h3>Data Sharing</h3>	
+	</div>
+	<div id="form1">
+		<label for="email">e-mail: </label>
+		<div id="email"></div><br/>
+		<input id="filelink" type="hidden"/>
+		<div id="submit"></div>
+		<div id="mailsent" style="display:none;background-color: green; color: white;"><h2>e-mail sent</h2></div>
+	</div>
+	<div style="height:10%;width:100%"></div>
+	<div>
+		Click to download data in csv format<br/><br/>
+		<button type="Button" id="download">Download</button>
+	</br></br><br/>	
+        <button data-dojo-type="dijit.form.Button" id="showDialog">
+            Show Help
+            <script type="dojo/connect" data-dojo-event="onClick">
+				dijit.byId("wizardDialog").selectChild("start");
+                document.getElementById("wizardDialog").style.display = "block";
+				document.getElementById("info").style.display = "block";
+            </script>
+        </button>
+	
+	</div>
+</div>
+<div id="footer" class="container">
+
+<P>
+&nbsp &nbsp &nbsp
+<a href="http://www.mycoheb.org">Home</a> -
+<a href="http://www.cdc.gov">CDC</a> -
+<a href="http://www.phe.gov/about/aspr/Pages/default.aspx">ASPR</a> -
+<a href="http://www.hhs.gov/">HHS</a> -
+<a href="opensource.html">Open Source List</a> -
+<a href="privacy.html">Privacy Policy</a>
+</P>
+ <div onclick="location.href='http://geotree.geog.uni.edu/';" style="cursor:pointer;position:absolute;right:0;top:0;width:170px;height:60px;"> </div>
+
+
+
+
+</div>
+
+<div id="timelinediv" class="container">
+<div id="timeline"></div>
+<button id="tl_back">Back</button>
+</div>
+
+<div id="info" class="container">
+<div id="info_text" class="container" style="display:none;height:100%;width:100%;">There are no results to display </br> </br> <img='/images/bird.PNG'/> </br></br>Looks like no one is tweeting here...</div>
+<div id="spinner" style="display:none;height:100%;width:100%;"></div>
+
+<!-- Begin Wizard Html -->
+
+<div id="wizardDialog" data-dojo-type="dojox.widget.Wizard" style="height:100%;width:100%;text-align:left;">
+	<div dojoType="dojox.widget.WizardPane" id="firstrun" style="padding:2px;text-align:left;height:100%;">
+		<h4 align='center'>How to use MyCoHeB</h4><h4>		
+1. Pan the map to select your area of interest (to zoom in or zoom out, use the + or . tools located at the left side of the map)
+       </br>      OR </br>
+Enter a city name to center the map on your area of interest using the search box which is located at the top left side of this page
+ </br>
+2. Then, use rectangle or circle selection tools (located on the lower left hand corner of the map section) to precisely draw on the map your area of interest.
+  </br>
+3. Click on 'Draw Chart' to have results returned here. 
+ </br>
+4. Share the results (email) with a friend or colleague by using the data sharing form to the right. You can also download the entire results in CSV format.
+
+</h4>
+
+5. For more details on this click the next button below.</br>
+<font size='0.0009em' color='red'>Tested browsers (all features tested and working): Internet Explorer 9, Opera 11, Sarfari 5, FireFox 12, Chrome 19 </br>
+Browers with issues : Internet Explorer 8 search disabled, Internet Explorer 7 and lower have page render issues and search is disabled </font>
+</div>
+
+	<div dojoType="dojox.widget.WizardPane" id="start" style="padding:2px;">
+    	   <h1 align='center'>  Start out by locating an area on the map </h1>
+			<h2>
+            Use the search bar at the top to center the map over
+            1 of 90,000+ populated cities</h2>
+			<img src="images/citySearchSelect.PNG" height="90px" width="250px" style="margin:auto;display:block;">
+                  Or
+			<h2>
+            Move the map around with the mouse to locate the area of interest
+        	</h2>
+    </div>
+    
+	<div dojoType="dojox.widget.WizardPane" tyle="padding:15px">
+            
+	        <h2 align='center'>Next select an area on the map </h2>
+	            </br>
+	            <h3>Click the circle <img src="images/circleSelect.PNG" height="25px" width="25px" > or box <img src="images/boxSelect.PNG"  height="25px" width="25px" > to use the  selection tools to encompass the desired area.</h3>
+				<h3> 
+    	        <font color="red">
+        	    And click again to turn off selection mode if you wish to move the map around.
+	            </font>
+				</h3>
+	            </P>
+    	    </div>
+	<div dojoType="dojox.widget.WizardPane" style="padding:15px">
+    	           <h2 align='center'>After you have selected desired area click draw chart </br>
+					<img src="images/drawChart.PNG" height="45px" width="55px" >
+					</br> at the top and wait 1 to 10 seconds based on area selected. 
+					</BR> The results will appear here</h2>
+	
+	</div>
+	
+	<div dojoType="dojox.widget.WizardPane" style="padding:15px">
+	                   <h1 align='center'>To save the results for later or share with a friend or colleague</h1>
+						<h2>Click download and save the data for later
+						</br>
+						Or
+						</br>
+		                  Fill out the email box and send the results by email
+						</h2>				
+				<script type="dojo/method" event="doneFunction">
+				document.getElementById("wizardDialog").style.display = "none";
+				document.getElementById("info").style.display = "none";
+				</script>
+	         </div>
+	    </div>
+<!-- End Wizard -->
+</div>
+<iframe id="dl" style="display:none"></iframe>
+</div> <!-- outer -->
+<div id="splash">
+<script type="text/javascript">
+    var spinner = new Spinner({
+        lines: 12,
+        length: 25,
+        width: 5,
+        radius: 20,
+        color: "#000",
+        speed: 1,
+        trail: 50,
+        shadow: true
+    }).spin(document.getElementById("splash"));
+</script>
+</div>
+</font>
+</body>
+
+</html>
